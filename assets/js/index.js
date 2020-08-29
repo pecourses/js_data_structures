@@ -299,3 +299,25 @@ function reverse(string) {
 }
 // 'test' -> 'tset'
 // 'example' -> 'elpmaxe'
+console.log(checkBraces('()()()(())'))
+function checkBraces(string) {
+  const stack = new Stack();
+
+ /*  if (string % 2 !== 0) {
+    return false;
+  } */
+  for (const brace of string) {
+    if (brace === "(") {
+      stack.push(brace);
+      continue;
+    }
+
+    if (brace === ")") {
+      if (stack.isEmpty) {
+        return false;
+      }
+      stack.pop();
+    }
+  }
+  return stack.isEmpty;
+}
