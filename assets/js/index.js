@@ -93,12 +93,175 @@ class MyArray {
     }
     return this.length;
   }
+
+  [Symbol.iterator]() {
+    return new MyArrayIterator(this);
+    /* return {
+      iterable: this,
+      iteration: 0,
+
+      next() {
+        const currentIndex = this.iteration;
+        this.iteration = this.iteration + 1;
+
+        if (this.iteration > this.iterable.length) {
+          return {
+            done: true,
+          };
+        }
+        return {
+          value: this.iterable[currentIndex],
+          done: false,
+        };
+      },
+    }; */
+  }
 }
 
+class MyArrayIterator {
+  /**
+   *
+   * @param {MyArray} myArray
+   */
+  constructor(myArray) {
+    this.iterable = myArray;
+    this.iteration = 0;
+  }
+
+  next() {
+    return {
+      value: this.iterable[this.iteration++],
+      done: this.iteration > this.iterable.length,
+    };
+  }
+}
+
+const myArr = new MyArray(1, 2, 3, 4, 5);
 //Напишите функцию, которая возвращает массив состоящий только из уникальных элементов из каждого входящего массива
 
 const arr = [1, 2, 3, 3, 44, 5, 32, 12, 4, 4, 4];
 
 function unique(array) {
   return [...new Set(array)];
+}
+
+class ListNode {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
+
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.length = 0;
+  }
+  addNode(value) {
+    const node = new ListNode(value);
+
+    if (this.length === 0) {
+      this.head = node;
+    } else {
+      let current = this.head;
+      while (current.next) {
+        current = current.next;
+      }
+      current.next = node;
+    }
+    this.length++;
+  }
+
+  getNodeByIndex(index) {
+    if (this.length === 0 || index < 0 || index > this.length) {
+      throw new RangeError("Not in list");
+    }
+
+    let current = this.head;
+    let count = 0;
+
+    while (count < index) {
+      current = current.next;
+      count++;
+    }
+    return current;
+  }
+  [Symbol.iterator]() {
+    return new LinkedListIterator(this);
+  }
+}
+
+class LinkedListIterator {
+  /**
+   *
+   * @param {LinkedList} list
+   */
+  constructor(list) {
+    this.iterable = list.head;
+  }
+
+  next() {
+    if (this.iterable) {
+      const value = this.iterable.value;
+      this.iterable = this.iterable.next; // i++
+
+      return {
+        value,
+        done: false,
+      };
+    }
+    return { done: true };
+  }
+}
+
+const list = new LinkedList();
+
+list.addNode("test1");
+list.addNode("tes2");
+list.addNode("test3");
+
+// LIFO - Last In First Out
+class Stack {
+  constructor(maxSize = 1000) {
+    if (typeof maxSize !== "number") {
+      throw new TypeError("size must be a number");
+    }
+    if (maxSize < 1) {
+      throw new RangeError("must be a positive number");
+    }
+
+    this._maxSize = maxSize;
+    this._size = 0;
+  }
+
+  get maxSize() {
+    return this._maxSize;
+  }
+
+  get isEmpty() {
+    return this.size === 0;
+  }
+
+  get size() {
+    return this._size;
+  }
+
+  push(value) {
+    if (this.size >= this.maxSize) {
+      throw new RangeError("Stack overflow");
+    }
+    this[this.size++] = value;
+    return this.size;
+  }
+
+  pop() {
+      
+  }
+
+  peek() {
+    if (this.isEmpty) {
+      return;
+    }
+    return this[this.size - 1];
+  }
 }
