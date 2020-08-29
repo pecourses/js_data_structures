@@ -5,8 +5,7 @@ class MyArray {
     this.length = 0;
 
     for (const item of args) {
-      this[this.length] = item;
-      ++this.length;
+      this[this.length++] = item;
     }
   }
 
@@ -67,4 +66,39 @@ class MyArray {
     }
     return newArr;
   }
+
+  shift() {
+    if (this.length === 0) {
+      return;
+    }
+    const deletedElement = this[0];
+    for (let i = 0; i < this.length; i++) {
+      this[i] = this[i + 1];
+    }
+    delete this[this.length - 1];
+    this.length--;
+    return deletedElement;
+  }
+
+  unshift(...items) {
+    const newLength = this.length + items.length;
+
+    for (let i = newLength; i > items.length; i--) {
+      this[i - 1] = this[i - items.length - 1];
+    }
+
+    for (let i = 0; i < items.length; i++) {
+      this[i] = items[i];
+      this.length++;
+    }
+    return this.length;
+  }
+}
+
+//Напишите функцию, которая возвращает массив состоящий только из уникальных элементов из каждого входящего массива
+
+const arr = [1, 2, 3, 3, 44, 5, 32, 12, 4, 4, 4];
+
+function unique(array) {
+  return [...new Set(array)];
 }
