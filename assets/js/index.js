@@ -246,6 +246,10 @@ class Stack {
     return this._size;
   }
 
+  set size(value) {
+    this._size = value;
+  }
+
   push(value) {
     if (this.size >= this.maxSize) {
       throw new RangeError("Stack overflow");
@@ -255,7 +259,12 @@ class Stack {
   }
 
   pop() {
-      
+    if (this.isEmpty) {
+      return;
+    }
+    const deletedElement = this[--this.size];
+    delete this[this.size];
+    return deletedElement;
   }
 
   peek() {
@@ -265,3 +274,28 @@ class Stack {
     return this[this.size - 1];
   }
 }
+
+const stack = new Stack();
+
+stack.push("test1");
+stack.push("test2");
+stack.push("test3");
+stack.push("test4");
+console.log(reverse("example"));
+function reverse(string) {
+  const stack = new Stack(string.length);
+
+  for (const letter of string) {
+    stack.push(letter);
+  }
+
+  const result = [];
+
+  while (!stack.isEmpty) {
+    result.push(stack.pop());
+  }
+
+  return result.join("");
+}
+// 'test' -> 'tset'
+// 'example' -> 'elpmaxe'
