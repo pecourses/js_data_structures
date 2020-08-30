@@ -303,7 +303,7 @@ console.log(checkBraces('()()()(())'))
 function checkBraces(string) {
   const stack = new Stack();
 
- /*  if (string % 2 !== 0) {
+ /*  if (string.length % 2 !== 0) {
     return false;
   } */
   for (const brace of string) {
