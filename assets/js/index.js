@@ -281,7 +281,8 @@ stack.push("test1");
 stack.push("test2");
 stack.push("test3");
 stack.push("test4");
-console.log(reverse("example"));
+
+//console.log(reverse("example"));
 function reverse(string) {
   const stack = new Stack(string.length);
 
@@ -299,11 +300,12 @@ function reverse(string) {
 }
 // 'test' -> 'tset'
 // 'example' -> 'elpmaxe'
-console.log(checkBraces('()()()(())'))
+//console.log(checkBraces('()()()(())'))
+
 function checkBraces(string) {
   const stack = new Stack();
 
- /*  if (string.length % 2 !== 0) {
+  /*  if (string.length % 2 !== 0) {
     return false;
   } */
   for (const brace of string) {
@@ -320,4 +322,75 @@ function checkBraces(string) {
     }
   }
   return stack.isEmpty;
+}
+
+// FIFO - Fist In First Out
+class Queue {
+  constructor(...args) {
+    this._oldIndex = 0;
+    this._newIndex = 0;
+
+    for (const item of args) {
+      this.push(item);
+    }
+  }
+
+  get size() {
+    return this._newIndex - this._oldIndex;
+  }
+
+  push(value) {
+    this[this._newIndex++] = value;
+    return this.size;
+  }
+
+  pop() {
+    if (this.size === 0) {
+      return;
+    }
+    const deletedElement = this[this._oldIndex];
+    delete this[this._oldIndex++];
+    return deletedElement;
+  }
+
+  peek() {
+    return this[this._oldIndex];
+  }
+}
+
+const q1 = new Queue();
+q1.push("test");
+q1.push("text");
+q1.push("element");
+q1.push("new string");
+
+const q2 = new Queue();
+q2.push(1);
+q2.push(2);
+q2.push(3);
+q2.push(4);
+q2.push(5);
+q2.push(6);
+
+/* Функция, которая принимает две непустые очереди [не]одинакового размера и возвращает одну, в которой элементы исходных очередей чередуются. */
+
+/**
+ *
+ * @param {Queue} queue1
+ * @param {Queue} queue2
+ * @returns {Queue} result
+ */
+function joinQueues(queue1, queue2) {
+  const result = new Queue();
+
+  while (queue1.size || queue2.size) {
+    if (queue1.peek()) {
+      result.push(queue1.pop());
+    }
+    if (queue2.peek()) {
+      result.push(queue2.pop());
+    }
+  }
+
+  return result;
 }
